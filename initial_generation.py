@@ -4,13 +4,14 @@ import re
 class Gen:
     def __init__(self):
         with open("words.csv") as file:
-            self.word=random.choice(file.readlines())
-        self.word=re.sub("\n","",self.word)
+            self.read=file.readlines()
+        self.read=[re.sub("\n","",word) for word in self.read]
+        self.word = random.choice(self.read)
         self.word_characterization={letter:[] for letter in self.word}
         for letter in self.word:
             self.word_characterization[letter].append(letter)
         self.t=Tk()
-        self.t.title("Budget Wordle")
+        self.t.title("Hexordle")
         self.t.config(background="light gray")
         self.placements={0:[],1:[],2:[],3:[],4:[],5:[]}
         self.current_row=0
@@ -47,6 +48,8 @@ class Gen:
         if guess != "":
             if len(guess) !=6:
                 self.input.insert(index=0,string="6 letter words only")
+            elif guess not in self.read:
+                self.input.insert(index=0,string="That's not a real word")
             else:
                 self.word_characterization = {letter: [] for letter in self.word}
                 for letter in self.word:
